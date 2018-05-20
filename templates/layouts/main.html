@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}Food&Drinks{% endblock %}</title>
+    <link href='https://fonts.googleapis.com/css?family=Lobster+Two:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,300,700' rel='stylesheet'
+          type='text/css'/>
+
+    <!--MOBILE DEVICE-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font-awesome.css') }}"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/responsive.css') }}"/>
+
+    <!--JS-->
+
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-1.11.3.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/modernizr.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/waypoints.min.js') }}"></script>
+</head>
+
+<body>
+<!-- Paste this code after body tag -->
+<div class="se-pre-con"></div>
+<!-- Ends -->
+
+<header>
+    <div class="container">
+        <div class="row clearfix" id="home">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="logo logo-small">
+                    <a href=""><span class="red">F</span><span class="orange">&</span><span class="green">D</span></a>
+                </div>
+                <div class="logo logo-big">
+                    <a href="{{ url_for('home') }}">
+                        <span class="red">Food</span><span class="orange">&</span><span class="green">Drink</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <div class="contact">
+                    <p>Questions? Call us Toll-free!<span class="number"><a href="#">1800-0000-7777</a></span><span
+                            class="time">(11AM to 11PM)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% block content %}{% endblock %}
+<footer class="section8">
+    <div class="container" id="contact">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="site">
+                    <h3>Site Link</h3>
+                </div>
+                <div class="sitelink">
+                    <ul>
+                        <li><span>&#10152;</span><a href="#">O nas</a></li>
+                        <li><span>&#10152;</span><a href="#">Formularz kontaktowy</a></li>
+                        <li><span>&#10152;</span><a href="#">Polityka Prywatności</a></li>
+                        <li><span>&#10152;</span><a href="https://stxnext.pl/">STX Next</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="follow">
+                    <h3>Follow Us On...</h3>
+                </div>
+                <div class="social">
+                    <ul>
+                        <li><i class="fa fa-facebook-square"></i><a href="https://www.facebook.com/StxNext/">Facebook</a></li>
+                        <li><i class="fa fa-twitter-square"></i><a href="https://twitter.com/STXNext">Twitter</a></li>
+                        <li><i class="fa fa-linkedin-square"></i><a href="https://www.linkedin.com/company/stx-next-python-experts/">Linkedin</a></li>
+                        <li><i class="fa fa-google-plus-square"></i><a href="https://plus.google.com/+STXNextPython">Google Plus</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <div class="submit">
+                    <h3>Subscribe Newsletter</h3>
+                    <p>To get latest updates and food deals
+                        every week</p>
+                </div>
+                <div class="submitbox">
+                    <input type="text"/>
+                    <div class="sub"><a href="{{ url_for('newsletter') }}">Submit</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+<footer class="section9">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="email">&copy; All right reserved 2018</div>
+                <p class="freetemplates">Free Template by <a href="http://freetemplates.pro/">FreeTemplates.pro</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+<script type="text/javascript" src="{{ url_for('static', filename='js/sidemenu.js') }}"></script>
+</body>
+</html>
