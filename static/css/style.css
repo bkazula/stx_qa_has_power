@@ -391,6 +391,11 @@ header {
     padding: 60px 0 60px;
 }
 
+.section4 figure {
+    width: 170px;
+    height: 120px;
+}
+
 .special h2 {
     text-align: center;
     font-family: 'Lobster Two', cursive;
@@ -465,7 +470,7 @@ header {
 
 .dotted6 {
     border: 1px dashed #515151;
-    width: 30%;
+    width: 55%;
     display: inline-block;
     top: 5%;
     position: absolute;
@@ -838,12 +843,12 @@ if it's not present, don't show loader */
         display: none;
     }
 }
+
 @media screen and (max-width: 600px) {
     .logo-small {
         display: block;
     }
 }
-
 
 .step {
     position: relative;
@@ -897,4 +902,40 @@ if it's not present, don't show loader */
     background-color: #515151;
     border-bottom-left-radius: 300px;
     border-bottom-right-radius: 300px;
+}
+
+@keyframes grayscale-logo {
+    from {
+        filter: grayscale(100%);
+    }
+    to {
+        filter: grayscale(0%);
+    }
+}
+
+.restaurant-logo {
+    max-width: 170px;
+    max-height: 120px;
+    filter: grayscale(100%);
+}
+
+.restaurant-logo:hover {
+    animation-name: grayscale-logo;
+    animation-delay: 0ms;
+    -webkit-animation-duration: .5s;
+    -moz-animation-duration: .5s;
+    -o-animation-duration: .5s;
+    animation-duration: .5s;
+    animation-iteration-count: 1;
+    filter: grayscale(0%);
+}
+
+.restaurant-link {
+    width: 170px;
+    height: 120px;
+    text-align: center;
+    display: inline-flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
 }
