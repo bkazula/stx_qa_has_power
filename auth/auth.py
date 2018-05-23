@@ -34,7 +34,7 @@ def register_post():
         db.session.add(user)
         db.session.commit()
         flash('User created successfully!')
-        return redirect(url_for('auth.register'))
+        return redirect(url_for('auth.login'))
     return render_template('pages/register.html', form=form)
 
 
@@ -47,15 +47,11 @@ def login_post():
             user = User.query.filter_by(email=email).one()
             if check_password_hash(user.password, form.password.data):
                 flash("You are now logged in")
-
                 session['email'] = request.form['email']
                 return redirect(url_for('auth.dashboard'))
             else:
                 flash("Invalid credentials, try again.")
-                resp = make_response(
-                    render_template('pages/login.html', form=form))
-                resp.set_cookie('name', '111')
-                return resp
+                return render_template('pages/login.html', form=form)
         return render_template('pages/login.html', form=form)
     except NoResultFound:
         flash('User does not exists')
@@ -64,7 +60,7 @@ def login_post():
 
 @auth.route('/login', methods=['GET'])
 def login():
-    form = UserLoginForm(request.form)
+    form = UserLoginForm()
     return render_template('pages/login.html', form=form)
 
 

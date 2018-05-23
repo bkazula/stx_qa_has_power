@@ -4,9 +4,21 @@
     <form method="post">
         <ul>
             <li>Name {{ form.name }}</li>
+            {% for error in form.name.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
             <li>Email {{ form.email }}</li>
+            {% for error in form.email.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
             <li>Password {{ form.password }}</li>
+            {% for error in form.password.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
             <li>Confirm Passoword {{ form.confirm }}</li>
+            {% for error in form.confirm.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
         </ul>
         <input type="submit" value=Submit>
     </form>
