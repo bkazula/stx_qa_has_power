@@ -1,0 +1,22 @@
+{% extends 'layouts/main.html' %}
+{% block content %}
+    <h1>Register</h1>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class=flashes>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <form method=post>
+        <ul>
+            <li>Name {{ form.name }}</li>
+            <li>Email {{ form.email }}</li>
+            <li>Password {{ form.password }}</li>
+            <li>Confirm Passoword {{ form.confirm }}</li>
+        </ul>
+        <p><input type=submit value=Submit>
+    </form>
+{% endblock %}

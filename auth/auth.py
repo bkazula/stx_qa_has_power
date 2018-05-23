@@ -1,0 +1,72 @@
+from flask import (
+    Blueprint,
+    flash,
+    make_response,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
+from werkzeug.security import check_password_hash, generate_password_hash
+
+from auth.forms import RegisterForm, UserLoginForm
+from .models import User, db
+
+auth = Blueprint('auth', __name__, template_folder='templates')
+
+
+@auth.route('/register', methods=['GET'])
+def register():
+    form = RegisterForm()
+    return render_template('pages/register.html', form=form)
+
+
+@auth.route('/register', methods=['POST'])
+def register_post():
+    form = RegisterForm(request.form)
+    if form.validate():
+        name = form.name.data
+        email = form.email.data
+        password = generate_password_hash(form.password.data)
+        user = User(name=name, email=email, password=password)
+        db.session.add(user)
+        db.session.commit()
+        flash('User created successfully!')
+        return redirect(url_for('auth.register'))
+    return render_template('pages/register.html', form=form)
+
+
+@auth.route('/login', methods=['GET', 'POST'])
+def login():
+    form = UserLoginForm(request.form)
+    email = form.email.data
+    try:
+        user = User.query.filter_by(email=email).first()
+        if request.method == "POST" and form.validate():
+            if check_password_hash(user.password, form.password.data):
+                flash("You are now logged in")
+
+                session['email'] = request.form['email']
+                return redirect(url_for('auth.dashboard'))
+            else:
+                flash("Invalid credentials, try again.")
+                resp = make_response(render_template('pages/login.html', form=form))
+                resp.set_cookie('name', '111')
+                return resp
+        return render_template('pages/login.html', form=form)
+    except Exception:
+        flash('User does not exists')
+        return render_template('pages/login.html', form=form)
+
+
+@auth.route('/logout')
+def logout():
+    session.clear()
+    flash("You have been logged out!")
+    return render_template('pages/logout.html')
+
+
+@auth.route('/dashboard')
+def dashboard():
+    return render_template('pages/dashboard.html')
