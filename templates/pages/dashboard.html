@@ -1,14 +1,4 @@
 {% extends 'layouts/main.html' %}
 {% block content %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class=flashes>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
     <p>Fortunately we are on the job, and you can just return home!</p>
-    <p><a href="{{ url_for('auth.logout') }}">logout</a></p>
 {% endblock %}

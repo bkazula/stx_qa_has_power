@@ -1,9 +1,9 @@
 from logging import FileHandler, Formatter
 
 from flask import Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
 
 from auth import auth
-from auth.models import *
 
 #----------------------------------------------------------------------------#
 # App Config.

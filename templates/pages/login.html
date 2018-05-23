@@ -1,15 +1,6 @@
 {% extends 'layouts/main.html' %}
 {% block content %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul class=flashes>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-    <form method=post>
+    <form method="post">
         <ul>
             <li>Email {{ form.email }}</li>
             {% for error in form.password.errors %}
@@ -20,8 +11,7 @@
                 <span style="color: red;">[{{ error }}]</span>
             {% endfor %}
         </ul>
-        <p><input type=submit value=Submit>
+        <p><input type="submit" value=Submit>
     </form>
     <p>Fortunately we are on the job, and you can just return home!</p>
-    <p><a href="{{ url_for('home') }}">Back</a></p>
 {% endblock %}

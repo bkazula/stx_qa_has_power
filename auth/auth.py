@@ -8,6 +8,7 @@ from flask import (
     session,
     url_for,
 )
+from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from auth.forms import RegisterForm, UserLoginForm
@@ -37,13 +38,13 @@ def register_post():
     return render_template('pages/register.html', form=form)
 
 
-@auth.route('/login', methods=['GET', 'POST'])
-def login():
+@auth.route('/login', methods=['POST'])
+def login_post():
     form = UserLoginForm(request.form)
-    email = form.email.data
     try:
-        user = User.query.filter_by(email=email).first()
         if request.method == "POST" and form.validate():
+            email = form.email.data
+            user = User.query.filter_by(email=email).one()
             if check_password_hash(user.password, form.password.data):
                 flash("You are now logged in")
 
@@ -51,13 +52,20 @@ def login():
                 return redirect(url_for('auth.dashboard'))
             else:
                 flash("Invalid credentials, try again.")
-                resp = make_response(render_template('pages/login.html', form=form))
+                resp = make_response(
+                    render_template('pages/login.html', form=form))
                 resp.set_cookie('name', '111')
                 return resp
         return render_template('pages/login.html', form=form)
-    except Exception:
+    except NoResultFound:
         flash('User does not exists')
         return render_template('pages/login.html', form=form)
+
+
+@auth.route('/login', methods=['GET'])
+def login():
+    form = UserLoginForm(request.form)
+    return render_template('pages/login.html', form=form)
 
 
 @auth.route('/logout')
