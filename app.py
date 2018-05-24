@@ -46,6 +46,7 @@ if not app.debug:
     app.logger.addHandler(file_handler)
     app.logger.info('errors')
 
+
 @app.cli.command()
 def migrate_database():
     from auth import models
@@ -53,6 +54,15 @@ def migrate_database():
     models.db.create_all()
 
     print('Database created')
+
+
+@app.cli.command()
+def reset_database():
+    from auth import models
+    db.drop_all()
+    models.db.drop_all()
+
+    print('Database removed')
 
 
 # Default port:
