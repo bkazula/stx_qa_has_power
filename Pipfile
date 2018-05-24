@@ -10,6 +10,7 @@ Flask-SQLAlchemy = "*"
 Flask-WTF = "*"
 WTForms = "*"
 gunicorn = "*"
+"psycopg2-binary" = "*"
 
 [dev-packages]
 
