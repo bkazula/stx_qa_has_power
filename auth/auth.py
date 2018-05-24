@@ -12,6 +12,7 @@ from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from auth.forms import RegisterForm, UserLoginForm
+from auth.decorators import login_required
 from .models import User, db
 
 auth = Blueprint('auth', __name__, template_folder='templates')
@@ -62,6 +63,7 @@ def login():
 
 
 @auth.route('/logout')
+@login_required
 def logout():
     session.clear()
     flash("You have been logged out!")
@@ -69,5 +71,6 @@ def logout():
 
 
 @auth.route('/dashboard')
+@login_required
 def dashboard():
     return render_template('pages/dashboard.html')
