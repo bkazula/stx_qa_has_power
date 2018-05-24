@@ -4,6 +4,7 @@ from flask import abort, Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 from auth import auth
+from home import home
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -12,6 +13,7 @@ from auth import auth
 app = Flask(__name__)
 app.config.from_object('config')
 app.register_blueprint(auth)
+app.register_blueprint(home)
 db = SQLAlchemy(app)
 
 
