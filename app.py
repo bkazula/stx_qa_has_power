@@ -1,9 +1,9 @@
-from flask import Flask, render_template, abort
-# from flask.ext.sqlalchemy import SQLAlchemy
-import logging
-from logging import Formatter, FileHandler
-from forms import *
-import os
+from logging import FileHandler, Formatter
+
+from flask import abort, Flask, render_template
+from flask_sqlalchemy import SQLAlchemy
+
+from auth import auth
 
 #----------------------------------------------------------------------------#
 # App Config.
@@ -11,27 +11,8 @@ import os
 
 app = Flask(__name__)
 app.config.from_object('config')
-#db = SQLAlchemy(app)
-
-# Automatically tear down SQLAlchemy.
-'''
-@app.teardown_request
-def shutdown_session(exception=None):
-    db_session.remove()
-'''
-
-# Login required decorator.
-'''
-def login_required(test):
-    @wraps(test)
-    def wrap(*args, **kwargs):
-        if 'logged_in' in session:
-            return test(*args, **kwargs)
-        else:
-            flash('You need to login first.')
-            return redirect(url_for('login'))
-    return wrap
-'''
+app.register_blueprint(auth)
+db = SQLAlchemy(app)
 
 
 @app.route('/')
@@ -43,18 +24,17 @@ def home():
 def newsletter():
     return abort(404)
 
+
 # Error handlers.
-
-
 @app.errorhandler(500)
 def internal_error(error):
-    #db_session.rollback()
     return render_template('errors/500.html'), 500
 
 
 @app.errorhandler(404)
 def not_found_error(error):
     return render_template('errors/404.html'), 404
+
 
 if not app.debug:
     file_handler = FileHandler('error.log')
@@ -65,6 +45,13 @@ if not app.debug:
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
     app.logger.info('errors')
+
+@app.cli.command()
+def migrate_database():
+    from auth import models
+    db.create_all()
+    models.db.create_all()
+
 
 # Default port:
 if __name__ == '__main__':
