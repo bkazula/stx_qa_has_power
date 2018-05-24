@@ -9,7 +9,11 @@ home = Blueprint('home', __name__, template_folder='templates')
 
 @home.route('/contact', methods=['GET'])
 def contact():
-    form = ContactForm(name=g.user.name, email=g.user.email)
+    data = {
+        'name': g.user.name if 'user' in g else '',
+        'email': g.user.email if 'user' in g else '',
+    }
+    form = ContactForm(**data)
     return render_template('pages/home/contact_form.html', form=form)
 
 
