@@ -1,6 +1,6 @@
 from logging import FileHandler, Formatter
 
-from flask import Flask, render_template
+from flask import abort, Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 
 from auth import auth
@@ -46,7 +46,7 @@ if not app.debug:
     app.logger.addHandler(file_handler)
     app.logger.info('errors')
 
-
+@app.cli.command()
 def migrate_database():
     from auth import models
     db.create_all()
