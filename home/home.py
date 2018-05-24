@@ -1,15 +1,16 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, g
 
 from home.froms import ContactForm
 from home.models import Contact, db
+from auth.decorators import login_required
 
 home = Blueprint('home', __name__, template_folder='templates')
 
 
 @home.route('/contact', methods=['GET'])
 def contact():
-    form = ContactForm(request.form)
-    return render_template('pages/contact_form.html', form=form)
+    form = ContactForm(name=g.user.name, email=g.user.email)
+    return render_template('pages/home/contact_form.html', form=form)
 
 
 @home.route('/contact', methods=['POST'])
@@ -25,5 +26,6 @@ def contact_post():
         db.session.commit()
         flash('Twoja wiadomość została wysłana', 'success')
         return redirect(url_for('home.contact'))
-    return render_template('pages/contact_form.html', form=form)
+    return render_template('pages/home/contact_form.html', form=form)
+
 
