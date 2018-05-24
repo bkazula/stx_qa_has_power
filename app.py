@@ -59,8 +59,10 @@ if not app.debug:
 @app.cli.command()
 def migrate_database():
     from auth import models
+    from home import models as home_models
     db.create_all()
     models.db.create_all()
+    home_models.db.create_all()
 
     print('Database created')
 
@@ -68,8 +70,10 @@ def migrate_database():
 @app.cli.command()
 def reset_database():
     from auth import models
+    from home import models as home_models
     db.drop_all()
     models.db.drop_all()
+    home_models.db.drop_all()
 
     print('Database removed')
 
