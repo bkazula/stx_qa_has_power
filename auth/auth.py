@@ -65,7 +65,7 @@ def login():
 def logout():
     session.clear()
     flash("You have been logged out!")
-    return render_template('pages/logout.html')
+    return redirect(url_for('auth.login'))
 
 
 @auth.route('/dashboard')
