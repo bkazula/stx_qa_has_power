@@ -52,6 +52,8 @@ def migrate_database():
     db.create_all()
     models.db.create_all()
 
+    print('Database created')
+
 
 # Default port:
 if __name__ == '__main__':
