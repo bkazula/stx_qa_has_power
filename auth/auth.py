@@ -42,21 +42,18 @@ def register_post():
 def login_post():
     form = UserLoginForm(request.form)
     try:
-        if request.method == "POST" and form.validate():
+        if form.validate():
             email = form.email.data
             user = User.query.filter_by(email=email).one()
             if check_password_hash(user.password, form.password.data):
                 flash("You are now logged in")
                 session['email'] = request.form['email']
                 return redirect(url_for('auth.dashboard'))
-            else:
-                flash("Invalid credentials, try again.")
-                return render_template('pages/login.html', form=form)
-        return render_template('pages/login.html', form=form)
-    except NoResultFound:
-        flash('User does not exists')
-        return render_template('pages/login.html', form=form)
 
+        raise NoResultFound
+    except NoResultFound:
+        flash("Invalid credentials, try again.")
+        return render_template('pages/login.html', form=form)
 
 @auth.route('/login', methods=['GET'])
 def login():
