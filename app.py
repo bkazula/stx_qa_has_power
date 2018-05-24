@@ -1,9 +1,9 @@
 from logging import FileHandler, Formatter
 
-from flask import abort, Flask, render_template
+from flask import abort, Flask, render_template, g, session
 from flask_sqlalchemy import SQLAlchemy
 
-from auth import auth
+from auth import auth, models as user_models
 from home import home
 
 #----------------------------------------------------------------------------#
@@ -16,6 +16,13 @@ app.register_blueprint(auth)
 app.register_blueprint(home)
 db = SQLAlchemy(app)
 
+
+@app.before_request
+def load_user():
+    if 'email' not in session:
+        return
+    user = user_models.User.query.filter_by(email=session['email']).one()
+    g.user = user
 
 @app.route('/')
 def home():
