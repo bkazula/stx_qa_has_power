@@ -53,15 +53,15 @@
         </div>
     </div>
 </header>
-{% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul class="flashes">
-            {% for message in messages %}
-                <li>{{ message }}</li>
+<section class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
             {% endfor %}
-        </ul>
-    {% endif %}
-{% endwith %}
+        {% endif %}
+    {% endwith %}
+</section>
 {% block content %}{% endblock %}
 <footer class="section8">
     <div class="container" id="contact">
