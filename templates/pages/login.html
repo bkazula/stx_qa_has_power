@@ -1,6 +1,9 @@
 {% extends 'layouts/main.html' %}
 {% block content %}
-<div class="container" style="margin-bottom: 50px;">    
+<div class="container" style="margin-bottom: 50px;">
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
     <h1 style="margin-bottom: 20px;">Login</h1>
     <form method="post">
         <div class="form-group row">
