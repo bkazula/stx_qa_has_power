@@ -7,7 +7,7 @@ from .models import User
 
 class RegisterForm(Form):
     name = StringField('Name', [validators.Length(
-        min=5, max=50, message='To pole powinno mieć min 5 max 50 znaków'
+        min=5, max=50, message='To pole powinno mieć od 5 do 50 znaków'
     )])
     email = StringField(
         'Email',
@@ -37,9 +37,9 @@ class RegisterForm(Form):
         for rule in rules:
             if not rule:
                 raise validators.ValidationError(
-                    """Hasło musi zawierać minimum jedną duzą literę, 2 cyfry,
-                     znak specjalny i małe litery"""
-                     )
+                    'Hasło musi zawierać minimum jedną duzą literę, 2 cyfry, '
+                    'znak specjalny i małe litery'
+                    )
 
     def validate_email(self, field):
         try:

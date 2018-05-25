@@ -58,7 +58,9 @@ def login_post():
         delta = timedelta(minutes=minutes[invalid_counter] or 0)
         unlock_time = (time + delta).time()
         if unlock_time > datetime.now().time():
-            flash('Nie możesz jeszcze podjąć próby logowania', 'danger')
+            flash(f'Nie możesz jeszcze podjąć próby logowania,'
+                  f' ponowne zalogowanie o {unlock_time.hour}:'
+                  f'{unlock_time.minute}:{unlock_time.second}', 'danger')
             return redirect(url_for('auth.login'))
     try:
         if form.validate():
