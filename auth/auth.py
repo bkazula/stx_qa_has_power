@@ -21,7 +21,6 @@ from .models import User, db
 auth = Blueprint('auth', __name__, template_folder='templates')
 
 
-
 @auth.route('/register', methods=['GET'])
 def register():
     form = RegisterForm()
@@ -47,19 +46,18 @@ def register_post():
 def login_post():
     form = UserLoginForm(request.form)
     invalid_counter = request.cookies.get('invalid_counter') or 0
-    if int(invalid_counter) > 1 and 'last_login_try' in request.cookies:
+    if int(invalid_counter) > 2 and 'last_login_try' in request.cookies:
         time = datetime.fromtimestamp(
             float(request.cookies.get('last_login_try')))
         minutes = {
-            '1': 1,
-            '2': 3,
-            '3': 5,
-            '4': 0,
+            '3': 1,
+            '4': 3,
+            '5': 5,
+            '6': 0,
         }
         delta = timedelta(minutes=minutes[invalid_counter] or 0)
         unlock_time = (time + delta).time()
         if unlock_time > datetime.now().time():
-            print(unlock_time)
             flash('Nie możesz jeszcze podjąć próby logowania', 'danger')
             return redirect(url_for('auth.login'))
     try:
@@ -67,7 +65,7 @@ def login_post():
             email = form.email.data
             user = User.query.filter_by(email=email).one()
             if check_password_hash(user.password, form.password.data):
-                flash("You are now logged in", 'success')
+                flash("Zostałeś zalogowany", 'success')
                 session['email'] = request.form['email']
                 return redirect(url_for('auth.dashboard'))
         raise NoResultFound
@@ -79,15 +77,17 @@ def login_post():
             resp.set_cookie('invalid_counter', str(count))
             resp.set_cookie('last_login_try', str(datetime.now().timestamp()))
             if invalid_counter == '1':
-                error = 'Logowanie zostało zablokowane na 1 min'
+                error = 'Niepoprawne dane logowania, spróbuj ponownie'
             elif invalid_counter == '2':
-                error = 'Logowanie zostało zablokowane na 3 min'
+                error = 'Logowanie zostało zablokowane na 1 min'
             elif invalid_counter == '3':
-                error = 'Logowanie zostało zablokowane na 5 min'
+                error = 'Logowanie zostało zablokowane na 3 min'
             elif invalid_counter == '4':
+                error = 'Logowanie zostało zablokowane na 5 min'
+            elif invalid_counter == '5':
                 resp.delete_cookie('invalid_counter')
         else:
-            error = 'Invalid credentials, try again.'
+            error = 'Niepoprawne dane logowania, spróbuj ponownie'
             resp.set_cookie("invalid_counter", value='1')
         resp.response = render_template('pages/login.html', form=form, error=error)
         return resp
@@ -103,7 +103,7 @@ def login():
 @login_required
 def logout():
     session.clear()
-    flash("You have been logged out!")
+    flash("Zostałeś wylogowany!")
     return redirect(url_for('auth.login'))
 
 

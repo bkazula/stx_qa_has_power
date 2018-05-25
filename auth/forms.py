@@ -6,15 +6,24 @@ from .models import User
 
 
 class RegisterForm(Form):
-    name = StringField('Name', [validators.Length(min=5, max=50)])
-    email = StringField('Email', [validators.DataRequired(), validators.Email(message='Niepoprawny adres email')])
+    name = StringField('Name', [validators.Length(
+        min=5, max=50, message='To pole powinno mieć min 5 max 50 znaków'
+    )])
+    email = StringField(
+        'Email',
+        [validators.DataRequired(message='To pole jest wymagane'),
+         validators.Email(message='Niepoprawny adres email')]
+    )
     password = PasswordField('Password', [
-        validators.DataRequired(),
-        validators.Length(min=12, max=17, message='Hasło musi mieć co najmniej 12 znaków i nie więcej niz 17'),
-
+        validators.DataRequired(message='To pole jest wymagane'),
+        validators.Length(
+            min=12,
+            max=17,
+            message='Hasło musi mieć co najmniej 12 znaków i nie więcej niz 17'
+        ),
     ])
     confirm = PasswordField('Confirm Password', [
-        validators.EqualTo('confirm', message='Podane hasła są rózne')
+        validators.EqualTo('password', message='Podane hasła są rózne')
     ])
 
     def validate_password(self, field):
@@ -27,16 +36,22 @@ class RegisterForm(Form):
         ]
         for rule in rules:
             if not rule:
-                raise validators.ValidationError('Hasło musi zawierać minimum jedną duzą literę, 2 cyfry, znak specjalny i małe litery')
+                raise validators.ValidationError(
+                    """Hasło musi zawierać minimum jedną duzą literę, 2 cyfry,
+                     znak specjalny i małe litery"""
+                     )
 
     def validate_email(self, field):
         try:
             User.query.filter_by(email=field.data).one()
-            raise validators.ValidationError('Nie mozna zarejestrować podanego adresu email')
+            raise validators.ValidationError(
+                'Nie mozna zarejestrować podanego adresu email')
         except NoResultFound:
             pass
 
 
 class UserLoginForm(Form):
     email = StringField('Email', validators=[validators.DataRequired()])
-    password = PasswordField('Password', validators=[validators.DataRequired()])
+    password = PasswordField(
+        'Password', validators=[validators.DataRequired()]
+    )
