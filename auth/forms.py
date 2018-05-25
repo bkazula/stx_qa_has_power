@@ -50,8 +50,36 @@ class RegisterForm(Form):
             pass
 
 
+class UpdateUserForm(Form):
+    name = StringField('Name', [validators.Length(
+        min=5, max=50, message='To pole powinno mieć od 5 do 50 znaków'
+    )])
+    email = StringField(
+        'Email',
+        [validators.DataRequired(message='To pole jest wymagane'),
+         validators.Email(message='Niepoprawny adres email')]
+    )
+
+
 class UserLoginForm(Form):
     email = StringField('Email', validators=[validators.DataRequired()])
     password = PasswordField(
         'Password', validators=[validators.DataRequired()]
     )
+
+
+class ChangePasswordForm(Form):
+    old_password = PasswordField('Old Password', [
+        validators.DataRequired(message='To pole jest wymagane'),
+    ])
+    password = PasswordField('Password', [
+        validators.DataRequired(message='To pole jest wymagane'),
+        validators.Length(
+            min=12,
+            max=17,
+            message='Hasło musi mieć co najmniej 12 znaków i nie więcej niz 17'
+        ),
+    ])
+    confirm = PasswordField('Confirm Password', [
+        validators.EqualTo('password', message='Podane hasła są rózne')
+    ])

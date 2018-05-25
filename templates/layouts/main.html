@@ -52,7 +52,7 @@
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
                 <div class="contact">
                     {% if 'email' in session %}
-                        <a href="{{ url_for('auth.dashboard') }}">Edycja danych</a> |
+                        <a href="{{ url_for('auth.edit_form') }}">Edycja danych</a> |
                         <a href="{{ url_for('auth.logout') }}">Wyloguj się</a>
                     {% else %}
                         <a href="{{ url_for('auth.login') }}">Zaloguj się</a> | 
