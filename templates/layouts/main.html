@@ -53,7 +53,8 @@
                 <div class="contact">
                     {% if 'email' in session %}
                         <a href="{{ url_for('auth.edit_form') }}">Edycja danych</a> |
-                        <a href="{{ url_for('auth.logout') }}">Wyloguj się</a>
+                        <a href="{{ url_for('auth.logout') }}">Wyloguj się</a> |
+                        <a href="{{ url_for('auth.dashboard') }}">Twój Panel</a>
                     {% else %}
                         <a href="{{ url_for('auth.login') }}">Zaloguj się</a> | 
                         <a href="{{ url_for('auth.register') }}">Zarejestruj się</a>
@@ -84,7 +85,7 @@
                     <ul>
                         <li><span>&#10152;</span><a href="{{ url_for('home.about') }}">O nas</a></li>
                         <li><span>&#10152;</span><a href="{{ url_for('home.contact') }}">Formularz kontaktowy</a></li>
-                        <li><span>&#10152;</span><a href="#">Polityka Prywatności</a></li>
+                        <li><span>&#10152;</span><a href="{{ url_for('home.privacy_policy') }}">Polityka Prywatności</a></li>
                         <li><span>&#10152;</span><a href="https://stxnext.pl/">STX Next</a></li>
                     </ul>
                 </div>

@@ -22,6 +22,7 @@ from auth.forms import (
     UpdateUserForm,
     UserLoginForm,
 )
+from home.models import Contact
 from .models import User, db
 
 auth = Blueprint('auth', __name__, template_folder='templates')
@@ -141,7 +142,9 @@ def edit_form_post():
 @auth.route('/dashboard')
 @login_required
 def dashboard():
-    return render_template('pages/dashboard.html')
+    user = g.user
+    contact = Contact.query.filter_by(email=user.email).all()
+    return render_template('pages/dashboard.html', contact=contact)
 
 
 @auth.route('/change_password', methods=['POST'])

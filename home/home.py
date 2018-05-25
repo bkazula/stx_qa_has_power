@@ -32,7 +32,13 @@ def contact_post():
         return redirect(url_for('home.contact'))
     return render_template('pages/home/contact_form.html', form=form)
 
+
 @home.route('/about')
 @login_required
 def about():
     return render_template('pages/home/about.html')
+
+
+@home.route('/privacy-policy')
+def privacy_policy():
+    return render_template('pages/home/privacy_policy.html')
