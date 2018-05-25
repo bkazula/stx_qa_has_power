@@ -10,12 +10,18 @@ from flask import (
     request,
     session,
     url_for,
+    g,
 )
 from sqlalchemy.orm.exc import NoResultFound
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from auth.forms import RegisterForm, UserLoginForm
 from auth.decorators import login_required
+from auth.forms import (
+    ChangePasswordForm,
+    RegisterForm,
+    UpdateUserForm,
+    UserLoginForm,
+)
 from .models import User, db
 
 auth = Blueprint('auth', __name__, template_folder='templates')
@@ -37,7 +43,7 @@ def register_post():
         user = User(name=name, email=email, password=password)
         db.session.add(user)
         db.session.commit()
-        flash('User created successfully!', 'success')
+        flash('Użytkownik został zarejestrowany', 'success')
         return redirect(url_for('auth.login'))
     return render_template('pages/register.html', form=form)
 
@@ -109,7 +115,52 @@ def logout():
     return redirect(url_for('auth.login'))
 
 
+@auth.route('/edit_form', methods=['GET'])
+@login_required
+def edit_form():
+    user = g.user
+    form = UpdateUserForm(obj=user)
+    return render_template('pages/edit_form.html', form=form)
+
+
+@auth.route('/edit_form', methods=['POST'])
+@login_required
+def edit_form_post():
+    user = g.user
+    form = UpdateUserForm(request.form, obj=user)
+    if form.validate():
+        user.name = form.name.data
+        user.email = form.email.data
+        db.session.commit()
+        session['email'] = request.form['email']
+        flash('Użytkownik został zaktualizowany', 'success')
+        return redirect(url_for('auth.dashboard'))
+    return render_template('pages/edit_form.html', form=form)
+
+
 @auth.route('/dashboard')
 @login_required
 def dashboard():
     return render_template('pages/dashboard.html')
+
+
+@auth.route('/change_password', methods=['POST'])
+@login_required
+def change_password_post():
+    form = ChangePasswordForm(request.form)
+    user = g.user
+    if form.validate():
+        if check_password_hash(user.password, form.old_password.data):
+            password = generate_password_hash(form.password.data)
+            user.password = password
+            db.session.commit()
+            flash('Hasło zostało zmienione', 'success')
+            return redirect(url_for('auth.dashboard'))
+    return render_template('pages/change_password.html', form=form)
+
+
+@auth.route('/change_password', methods=['GET'])
+@login_required
+def change_password():
+    form = ChangePasswordForm(obj=g.user)
+    return render_template('pages/change_password.html', form=form)
