@@ -1,6 +1,50 @@
 {% extends 'layouts/main.html' %}
 {% block content %}
     <div class="container" style="margin-bottom: 50px;">
-        <h1 style="margin-bottom: 20px;">Dasboard</h1>
+        <h1 style="margin-bottom: 20px;">Wysłane wiadomości z formularza kontaktowego</h1>
+        {% if contact %}
+            {% for contact in contact %}
+                <ul class="list-group">
+                 <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label>Imię i nazwisko</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <li class="list-group-item">{{ contact.name }}</li>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label>Email</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <li class="list-group-item">{{ contact.email }}</li>
+                    </div>
+                 </div>
+                <div class="form-group row">
+                    <div class="col-sm-2">
+                        <label>Temat</label>
+                    </div>
+                    <div class="col-sm-7">
+                        <li class="list-group-item">{{ contact.topic }}</li>
+                    </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-2">
+                            <label>Treść wiadomości</label>
+                        </div>
+                        <div class="col-sm-7">
+                            <li class="list-group-item">{{ contact.message }}</li>
+                        </div>
+                    </div>
+                </ul>
+                <hr>
+            {%  endfor %}
+
+        {% else %}
+            <div class="alert alert-info">
+                Brak Wysłanych wiadomosci
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
