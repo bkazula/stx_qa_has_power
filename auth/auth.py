@@ -27,6 +27,11 @@ from .models import User, db
 
 auth = Blueprint('auth', __name__, template_folder='templates')
 
+@auth.teardown_request
+def teardown_request(exception):
+    if exception:
+        db.session.rollback()
+    db.session.remove()
 
 @auth.route('/register', methods=['GET'])
 def register():

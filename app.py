@@ -24,6 +24,12 @@ def load_user():
     user = user_models.User.query.filter_by(email=session['email']).one()
     g.user = user
 
+@app.teardown_request
+def teardown_request(exception):
+    if exception:
+        db.session.rollback()
+    db.session.remove()
+
 @app.route('/')
 def home():
     return render_template('pages/home.html')
