@@ -21,26 +21,25 @@ class RegisterForm(Form):
 
     def validate_password(self, field):
         value: str = field.data
-        
+
         if not re.match('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9].*?[0-9])(?=.*?[#?!@$%^&*-]).{12,17}$', value):
             raise validators.ValidationError(
                 'Hasło musi składać się od 12 do 17 znaków i zawierać minimum jedną duzą literę, 2 cyfry, '
                 'znak specjalny i małe litery'
                 )
 
-        if False:
-            rules = [
-                re.match('^([A-Z].*|.*[A-Z])$', value), # Wielka litera na początku lub końcu
-                re.match('.*[0-9].*', value), # Jedna cyfra
-                re.match('.*[a-z].*[a-z].*', value), # Dwie małe litery w dowolnym miejscu
-                re.match('.+[^\w\s].*', value), # Co najmniej jeden znak specjalny, nie na początku
-            ]
-            for rule in rules:
-                if not rule:
-                    raise validators.ValidationError(
-                        'Hasło musi zawierać minimum jedną duzą literę, 2 cyfry, '
-                        'znak specjalny i małe litery'
-                        )
+        rules = [
+            re.match('^([A-Z].*|.*[A-Z])$', value), # Wielka litera na początku lub końcu
+            re.match('.*[0-9].*', value), # Jedna cyfra
+            re.match('.*[a-z].*[a-z].*', value), # Dwie małe litery w dowolnym miejscu
+            re.match('.+[^\w\s].*', value), # Co najmniej jeden znak specjalny, nie na początku
+        ]
+        for rule in rules:
+            if not rule:
+                raise validators.ValidationError(
+                    'Hasło musi zawierać minimum jedną duzą literę, 2 cyfry, '
+                    'znak specjalny i małe litery'
+                    )
 
     def validate_email(self, field):
         value: str = field.data
@@ -61,7 +60,7 @@ class RegisterForm(Form):
 
         if len(value) > 60:
             raise Exception
-            
+
         if len(value) > 50 or len(value) < 4:
             raise validators.ValidationError('To pole powinno mieć od 5 do 50 znaków')
 
